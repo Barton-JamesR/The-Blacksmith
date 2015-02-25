@@ -42,7 +42,6 @@ public class ItemStates : MonoBehaviour
 			State = STATES[StateIndex];
 
 			// Display the new and old states, for debugging purposes only
-			guiText.text = string.Format("Old State: {0} \nNew State: {1}", tempState, State);
 
 			clickTime = .5f + Time.time;
 		} 

@@ -43,6 +43,7 @@ public class ItemHoldingScript : MonoBehaviour {
 			ray = new Ray(Camera.main.transform.position,Camera.main.transform.forward);
 			if(rightHand != null){
 				rightHand.transform.parent = null;
+				rightHand.GetComponent<Rigidbody>().isKinematic=false;
 				rightHand = null;
 			}
 			else if(Physics.Raycast(ray,out hit,3)){
@@ -51,7 +52,16 @@ public class ItemHoldingScript : MonoBehaviour {
 						Debug.Log("Got something in my right hand!  It's a "+hit.collider.tag);
 						rightHand = hit.collider.gameObject;
 						rightHand.transform.parent = parent.transform;
+						rightHand.GetComponent<Rigidbody>().isKinematic=true;
 						rightHand.transform.localPosition = new Vector3(1,0,1);//One to the right, zero up, one forward.  Right hand position.
+					}
+					if(hit.collider.tag=="Weapon"){
+						Debug.Log("Got something in my right hand!  It's a "+hit.collider.tag);
+						rightHand = hit.collider.gameObject;
+						rightHand.transform.parent = parent.transform;
+						rightHand.GetComponent<Rigidbody>().isKinematic=true;
+						rightHand.transform.localPosition = new Vector3(1,0,1);//One to the right, zero up, one forward.  Right hand position.
+						rightHand.transform.localRotation = new Quaternion(0,0,0, 0);//The hammer we have needs to be rotated properly to face forward...
 					}
 				}
 			}
