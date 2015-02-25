@@ -1,8 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_Scripts\ItemStates.cs">
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\..\..\The-Blacksmith - Contains Scripts\The Blacksmith\Milestone 1\Assets\_Scripts\ItemHoldingScript.cs">
     <Files>
-      <File FileName="Assets\_Scripts\ItemStates.cs" Line="34" Column="3" />
+      <File FileName="..\..\..\The-Blacksmith - Contains Scripts\The Blacksmith\Milestone 1\Assets\_Scripts\_States\GrindstoneStates.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\_States\GrindstoneStates.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\_States\PlayerStates.cs" Line="1" Column="1" />
+      <File FileName="..\..\..\The-Blacksmith - Contains Scripts\The Blacksmith\Milestone 1\Assets\_Scripts\_States\PlayerStates.cs" Line="1" Column="1" />
+      <File FileName="..\..\..\The-Blacksmith - Contains Scripts\The Blacksmith\Milestone 1\Assets\_Scripts\ItemHoldingScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\ItemHoldingScript.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
