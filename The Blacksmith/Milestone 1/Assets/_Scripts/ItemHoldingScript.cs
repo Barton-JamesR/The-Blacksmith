@@ -13,6 +13,7 @@ public class ItemHoldingScript : MonoBehaviour {
 	PlayerStates myPlayerState; // used to access and change the players state
 	Collider shackle; //This is the workstation you're at!
 
+	public GUIText PointText;
 	public GUIText ToolText;
 	public GUIText WeaponText;
 	public GUIText HeatText;
@@ -132,6 +133,14 @@ public class ItemHoldingScript : MonoBehaviour {
 						shackle = hit.collider;
 						GetComponent<MouseLook>().sensitivityX = 0;
 					}
+					if(hit.collider.tag=="Deposit Box"){
+						SnapToObject ();
+						hit.collider.GetComponent<DepositStates>().Player = parent;
+						hit.collider.GetComponent<DepositStates>().SetWeapon(rightHand);
+						hit.collider.GetComponent<DepositStates>().myPlayerState = myPlayerState;
+						shackle = hit.collider;
+						GetComponent<MouseLook>().sensitivityX = 0;
+					}
 				}
 			}
 			else{
@@ -159,6 +168,10 @@ public class ItemHoldingScript : MonoBehaviour {
 					shackle.GetComponent<GrindstoneStates>().Player = null;
 					shackle = null;
 				}
+				else if(shackle.tag=="Deposit Box"){
+					shackle.GetComponent<DepositStates>().Player = null;
+					shackle = null;
+				}
 				locked = false;
 				lockPlayer(true);
 				if(leftHand != null){//These two ifs in the station-release section are to ensure that the equipment goes right back to where it belongs.
@@ -172,6 +185,7 @@ public class ItemHoldingScript : MonoBehaviour {
 			}
 			//Debug.Log("The player is at " + myPlayerState.Place);
 		}
+
 	}
 
 	void lockPlayer(bool islocked){
@@ -207,5 +221,6 @@ public class ItemHoldingScript : MonoBehaviour {
 			HeatText.text = "";
 			FormText.text = "";
 		}
+		PointText.text = "Points: " + myPlayerState.points.ToString ();
 	}
 }
