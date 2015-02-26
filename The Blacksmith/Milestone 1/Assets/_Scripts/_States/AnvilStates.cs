@@ -7,7 +7,10 @@ public class AnvilStates : MonoBehaviour {
 	public string State { get; set; }
 	public string WeaponState { get; set; }
 	public string ToolState { get; set; }
-
+	private bool isPoised = false;//James: the sword being poised to strike.
+	private double cooldown = 2.0;//James: two seconds between strikes, to ensure no rapid-fire forging.
+	private double hammercd = 1.5;
+	private bool down = false;
 	private GameObject weapon;
 	private GameObject tool;
 
@@ -34,15 +37,22 @@ public class AnvilStates : MonoBehaviour {
 	{
 		if (Player != null) 
 		{
+			cooldown += Time.deltaTime;
+			hammercd -= Time.deltaTime;
 			if (weapon != null)
 			{
 				WeaponState = weapon.GetComponent<ItemStates>().State;
-				Debug.Log(weapon.tag + ": " + WeaponState);
+				if(down){
+					if(hammercd <= 0){
+						ToolAway();
+					}
+				}
+				//Debug.Log(weapon.tag + ": " + WeaponState);
 			}
 			if (tool != null)
 			{
 				ToolState = tool.GetComponent<ItemStates>().State;
-				Debug.Log(tool.tag + ": " + ToolState);
+				//Debug.Log(tool.tag + ": " + ToolState);
 			}
 		}
 		else 
@@ -54,5 +64,98 @@ public class AnvilStates : MonoBehaviour {
 			ToolState = "NULL_STATE";
 			//Debug.Log("AnvilState Player was set to null");
 		}
+
+		//Beyond this point is the stuff James put into the same script file for convenience's sake; it'll be moved afterward (probably).
+		if(Input.GetMouseButton(1)){
+			//Debug.Log("Weapon is:" + weapon);
+			if(weapon != null){
+				if(!isPoised){
+					isPoised = true;
+					WeaponToward();
+					//The weapon's optimal position is .56, -.5, 1
+				}
+				//DebugLog("Poised to strike!");
+			}
+		}
+		else{
+			if(isPoised){
+				isPoised = false;
+				if(weapon != null){
+					//DebugLog("Weapon's present form: " + weapon.GetComponent<ItemStates>().Form);
+					WeaponAway ();
+				}
+			}
+		}
+		if(Input.GetMouseButton(0)){
+			if(isPoised){
+				if(tool != null){
+					if(tool.tag == "Hammer"){
+						if(cooldown >= 2.0){
+							ToolToward();
+							hammercd = 1.5;
+							down = true;
+							if(weapon.GetComponent<ItemStates>().Heat >= 50){
+								weapon.GetComponent<ItemStates>().addHeat(-7);
+								weapon.GetComponent<ItemStates>().addForm(10);
+								weapon.GetComponent<ItemStates>().addQuality(2);
+								//DebugLog("Successful Hit!");
+								cooldown = 0;
+							}
+							else{
+								weapon.GetComponent<ItemStates>().addHeat(-4);
+								weapon.GetComponent<ItemStates>().addQuality(-2);
+								weapon.GetComponent<ItemStates>().addDurability(-5);
+								//DebugLog("Bad hit; needs more Heat");
+								cooldown = 0;
+							}
+							//DebugLog("Struck the Item!  Form = " + weapon.GetComponent<ItemStates>().Form);
+						}
+					}
+				}
+			}
+		}
+	}
+	void WeaponToward(){
+		if(weapon != null){
+			Snap ();
+			weapon.transform.Rotate (new Vector3(0,0,90));
+			weapon.transform.localPosition = new Vector3(0.56f, -.5f, 1f);
+		}
+		if(tool != null){
+			Snap ();
+			tool.transform.localPosition = new Vector3(0, .39f, .55f);
+		}
+	}	
+	void WeaponAway(){
+		if(weapon != null){
+			Snap ();
+			weapon.transform.Rotate (new Vector3(0,0,-90));
+			weapon.transform.localPosition = new Vector3(1f, 0f, 1f);
+		}
+		if(tool != null){
+			Snap ();
+			tool.transform.localPosition = new Vector3(-1,0,1);
+		}
+	}
+	void ToolToward(){
+		if(tool != null){
+			Snap ();
+			tool.transform.localPosition = new Vector3(0, -.39f, .6f);
+		}
+	}
+	void ToolAway(){
+		if(tool != null){
+			Snap ();
+			tool.transform.localPosition = new Vector3(0, .39f, .55f);
+		}
+	}
+	void Snap(){
+		Player.transform.position = new Vector3(transform.position.x + 1, Player.transform.position.y, transform.position.z);
+		Player.transform.rotation = (Player.transform.rotation*(Quaternion.FromToRotation (Player.transform.forward, transform.forward)));
+		Player.transform.Rotate (new Vector3(0, -90, 0));
 	}
 }
+
+//TO DO AFTER LUNCH
+//Barrel Mechanics
+//Grindstone mechanics

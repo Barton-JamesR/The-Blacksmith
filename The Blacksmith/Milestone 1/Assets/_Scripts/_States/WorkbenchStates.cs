@@ -37,11 +37,11 @@ public class WorkbenchStates : MonoBehaviour {
 		if (Player != null) 
 		{
 			// constantly check and update the state of the weapon
-			weapon = GameObject.FindWithTag("Weapon");
+			//weapon = GameObject.FindWithTag("Weapon");
 			WeaponState = weapon.GetComponent<ItemStates>().State;
 			Debug.Log(weapon.tag + ": " + WeaponState);
 
-			tool = GameObject.FindWithTag("Hammer");
+			//tool = GameObject.FindWithTag("Hammer");
 			ToolState = tool.GetComponent<ItemStates>().State;
 			Debug.Log(tool.tag + ": " + ToolState);
 		}

@@ -1,13 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="..\..\..\The-Blacksmith - Contains Scripts\The Blacksmith\Milestone 1\Assets\_Scripts\ItemHoldingScript.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_Scripts\_States\ItemStates.cs">
     <Files>
-      <File FileName="..\..\..\The-Blacksmith - Contains Scripts\The Blacksmith\Milestone 1\Assets\_Scripts\_States\GrindstoneStates.cs" Line="1" Column="1" />
-      <File FileName="Assets\_Scripts\_States\GrindstoneStates.cs" Line="1" Column="1" />
-      <File FileName="Assets\_Scripts\_States\PlayerStates.cs" Line="1" Column="1" />
-      <File FileName="..\..\..\The-Blacksmith - Contains Scripts\The Blacksmith\Milestone 1\Assets\_Scripts\_States\PlayerStates.cs" Line="1" Column="1" />
-      <File FileName="..\..\..\The-Blacksmith - Contains Scripts\The Blacksmith\Milestone 1\Assets\_Scripts\ItemHoldingScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\_Scripts\ItemHoldingScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\MouseLook.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\_States\ForgeStates.cs" Line="60" Column="20" />
+      <File FileName="Assets\_Scripts\_States\ItemStates.cs" Line="50" Column="1" />
+      <File FileName="Assets\_Scripts\ItemHoldingScript.cs" Line="140" Column="90" />
+      <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\CharacterMotor.js" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\_States\AnvilStates.cs" Line="143" Column="54" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

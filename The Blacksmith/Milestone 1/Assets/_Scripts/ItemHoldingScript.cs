@@ -11,6 +11,13 @@ public class ItemHoldingScript : MonoBehaviour {
 	RaycastHit hit; //Part of the raycasting; don't want to re-create the var
 	//string State = ""; //This is for determining what's going on with the player presently; being in different stations affects your state.
 	PlayerStates myPlayerState; // used to access and change the players state
+	Collider shackle; //This is the workstation you're at!
+
+	public GUIText ToolText;
+	public GUIText WeaponText;
+	public GUIText HeatText;
+	public GUIText SharpText;
+	public GUIText FormText;
 
 
 	void Start () {
@@ -19,20 +26,22 @@ public class ItemHoldingScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		updateHUD();
 		if(Input.GetMouseButtonDown(0)){//NOTE:  0 is LMB, 1 is RMB, 2 is MMB.
 			ray = new Ray(Camera.main.transform.position,Camera.main.transform.forward);
 			if(leftHand != null){
-				if(leftHand.tag=="Hammer")//Right now, this is just for hammer; once everything we pick up can have a rigidbody on it
-					leftHand.GetComponent<Rigidbody>().isKinematic=false;//We just remove the if there and make it always change kinematic.
-				leftHand.transform.parent = null;
-				leftHand = null;
-				myPlayerState.LeftHand = "Empty";
+				if(!locked){
+					if(leftHand.tag=="Hammer")//Right now, this is just for hammer; once everything we pick up can have a rigidbody on it
+						leftHand.GetComponent<Rigidbody>().isKinematic=false;//We just remove the if there and make it always change kinematic.
+					leftHand.transform.parent = null;
+					leftHand = null;
+					myPlayerState.LeftHand = "Empty";
+				}
 			}
 			else if(Physics.Raycast(ray,out hit,3)){
 				if(leftHand == null){
-
 					if(hit.collider.tag=="Hammer"){//Right now we only pick up barrels, but we can do SO MUCH MORE!
-						Debug.Log("Got something in my left hand!  It's a "+hit.collider.tag);
+						//DebugLog("Got something in my left hand!  It's a "+hit.collider.tag);
 						leftHand = hit.collider.gameObject;
 						leftHand.transform.parent = parent.transform;
 						leftHand.GetComponent<Rigidbody>().isKinematic=true;
@@ -42,47 +51,50 @@ public class ItemHoldingScript : MonoBehaviour {
 					}
 				}
 			}
-			Debug.Log("The left hand is holding " + myPlayerState.LeftHand);
+			//Debug.Log("The left hand is holding " + myPlayerState.LeftHand);
 		}
 		if(Input.GetMouseButtonDown(1)){
 			ray = new Ray(Camera.main.transform.position,Camera.main.transform.forward);
 			if(rightHand != null){
-				rightHand.transform.parent = null;
-				rightHand.GetComponent<Rigidbody>().isKinematic=false;
-				rightHand = null;
-				myPlayerState.RightHand = "Empty";
+				if(!locked){
+					rightHand.transform.parent = null;
+					rightHand.GetComponent<Rigidbody>().isKinematic=false;
+					rightHand = null;
+					myPlayerState.RightHand = "Empty";
+				}
 			}
 			else if(Physics.Raycast(ray,out hit,3)){
 				if(rightHand == null){
 					if(hit.collider.tag=="Iron"){//Right now we only pick up barrels, but we can do SO MUCH MORE!
-						Debug.Log("Got something in my right hand!  It's a "+hit.collider.tag);
+						//Debug.Log("Got something in my right hand!  It's a "+hit.collider.tag);
 						rightHand = hit.collider.gameObject;
 						rightHand.transform.parent = parent.transform;
 						rightHand.GetComponent<Rigidbody>().isKinematic=true;
 						rightHand.transform.localPosition = new Vector3(1,0,1);//One to the right, zero up, one forward.  Right hand position.
+						rightHand.transform.localRotation = new Quaternion(0,0,0, 0);//
 						myPlayerState.RightHand = rightHand.tag;
 					}
 					if(hit.collider.tag=="Weapon"){
-						Debug.Log("Got something in my right hand!  It's a "+hit.collider.tag);
+						//Debug.Log("Got something in my right hand!  It's a "+hit.collider.tag);
 						rightHand = hit.collider.gameObject;
 						rightHand.transform.parent = parent.transform;
 						rightHand.GetComponent<Rigidbody>().isKinematic=true;
 						rightHand.transform.localPosition = new Vector3(1,0,1);//One to the right, zero up, one forward.  Right hand position.
-						rightHand.transform.localRotation = new Quaternion(0,0,0, 0);//The hammer we have needs to be rotated properly to face forward...
+						rightHand.transform.localRotation = new Quaternion(0,0,0, 0);//
 						myPlayerState.RightHand = rightHand.tag;
 					}
 				}
 			}
-			Debug.Log("The right hand is holding " + myPlayerState.RightHand);;
+			//Debug.Log("The right hand is holding " + myPlayerState.RightHand);;
 		}
 
 
 		//GameObject hitMe = null;
 		string theTag = "";
 		if(Input.GetKeyDown ("e")){
-			ray = new Ray(Camera.main.transform.position,Camera.main.transform.forward);
 
 			if(!locked){
+				ray = new Ray(Camera.main.transform.position,Camera.main.transform.forward);
 				if(Physics.Raycast(ray,out hit,3)){
 					//hitMe = hit.collider.gameObject;
 					theTag = hit.collider.tag;
@@ -91,51 +103,74 @@ public class ItemHoldingScript : MonoBehaviour {
 						hit.collider.GetComponent<AnvilStates>().Player = parent; // assign the player reference to the Player property in the AnvilStates script
 						hit.collider.GetComponent<AnvilStates>().SetWeapon(rightHand);
 						hit.collider.GetComponent<AnvilStates>().SetTool(leftHand);
+						GetComponent<MouseLook>().sensitivityX = 0;
+						shackle = hit.collider;
 					}
 					if(hit.collider.tag=="Workbench"){
 						SnapToObject();
 						//hit.collider.GetComponent<WorkbenchStates>().Player = transform.parent.gameObject;
+						shackle = hit.collider;
 					}
 					if(hit.collider.tag=="Forge"){
 						SnapToObject();
 						hit.collider.GetComponent<ForgeStates>().Player = parent;
 						hit.collider.GetComponent<ForgeStates>().SetWeapon(rightHand);
+						shackle = hit.collider;
+						GetComponent<MouseLook>().sensitivityX = 0;
 					}
 					if(hit.collider.tag=="Barrel"){
 						SnapToObject();
 						hit.collider.GetComponent<BarrelStates>().Player = parent;
 						hit.collider.GetComponent<BarrelStates>().SetWeapon(rightHand);
+						shackle = hit.collider;
+						GetComponent<MouseLook>().sensitivityX = 0;
 					}
 					if(hit.collider.tag=="Grindstone"){
 						SnapToObject();
 						hit.collider.GetComponent<GrindstoneStates>().Player = parent;
 						hit.collider.GetComponent<GrindstoneStates>().SetWeapon(rightHand);
+						shackle = hit.collider;
+						GetComponent<MouseLook>().sensitivityX = 0;
 					}
 				}
 			}
 			else{
-				locked = false;
-				lockPlayer(true);
 				myPlayerState.Place = "Free"; 
-				Debug.Log("We are unlocked and theTag = " + theTag + " or " + hit.collider.tag);
-
-				if(hit.collider.tag=="Anvil"){
-					hit.collider.GetComponent<AnvilStates>().Player = null; 
+				////DebugLog("We are unlocked and theTag = " + theTag + " or " + hit.collider.tag);
+				GetComponent<MouseLook>().sensitivityX = 15;//The sensitivityX=0 or 15 is to stop the player from looking left/right while undergoing
+														//A process; if you don't, they can look left or right and the object rotates with them.
+				//DebugLog(shackle);
+				if(shackle.tag=="Anvil"){
+					shackle.GetComponent<AnvilStates>().Player = null; 
+					shackle = null;
 				}
-				if(hit.collider.tag=="Workbench"){
+				else if(shackle.tag=="Workbench"){
 					//hit.collider.GetComponent<WorkbenchStates>().Player = null;
 				}
-				if(hit.collider.tag=="Forge"){
-					hit.collider.GetComponent<ForgeStates>().Player = null;
+				else if(shackle.tag=="Forge"){
+					shackle.GetComponent<ForgeStates>().Player = null;
+					shackle = null;
 				}
-				if(hit.collider.tag=="Barrel"){
-					hit.collider.GetComponent<BarrelStates>().Player = null;
+				else if(shackle.tag=="Barrel"){
+					shackle.GetComponent<BarrelStates>().Player = null;
+					shackle = null;
 				}
-				if(hit.collider.tag=="Grindstone"){
-					hit.collider.GetComponent<GrindstoneStates>().Player = null;
+				else if(shackle.tag=="Grindstone"){
+					shackle.GetComponent<GrindstoneStates>().Player = null;
+					shackle = null;
+				}
+				locked = false;
+				lockPlayer(true);
+				if(leftHand != null){//These two ifs in the station-release section are to ensure that the equipment goes right back to where it belongs.
+					leftHand.transform.localPosition = new Vector3(-1,0,1);//One to the right, zero up, one forward.  Right hand position.
+					leftHand.transform.localRotation = new Quaternion(0,150,0, 0);//The hammer we have needs to be rotated properly to face forward...
+				}
+				if(rightHand != null){
+					rightHand.transform.localPosition = new Vector3(1,0,1);//One to the right, zero up, one forward.  Right hand position.
+					rightHand.transform.localRotation = new Quaternion(0,0,0, 0);//The hammer we have needs to be rotated properly to face forward...
 				}
 			}
-			Debug.Log("The player is at " + myPlayerState.Place);
+			//Debug.Log("The player is at " + myPlayerState.Place);
 		}
 	}
 
@@ -151,5 +186,26 @@ public class ItemHoldingScript : MonoBehaviour {
 		locked=true;
 		lockPlayer (false);
 		myPlayerState.Place = hit.collider.tag; // Set the property Place to the tag of whatever thing we get locked to.
+	}
+
+	void updateHUD(){
+		if(leftHand != null){
+			ToolText.text = leftHand.tag;
+		}
+		else{
+			ToolText.text = "";
+		}
+		if(rightHand != null){
+			WeaponText.text = rightHand.tag;
+			SharpText.text = "Sharpness:  " + rightHand.GetComponent<ItemStates>().Sharpness.ToString();
+			HeatText.text = "Heat level:  " + rightHand.GetComponent<ItemStates>().Heat.ToString() + "%";
+			FormText.text = "Shape rating:  " + rightHand.GetComponent<ItemStates>().Form.ToString() + "%";
+		}
+		else{
+			WeaponText.text = "";
+			SharpText.text = "";
+			HeatText.text = "";
+			FormText.text = "";
+		}
 	}
 }
