@@ -22,5 +22,6 @@ public class PlayerStates : MonoBehaviour {
 		LeftHand = LEFT[0]; // start off holding nothing
 		RightHand = RIGHT[0]; // start off holding nothing
 		points = 0; //start off with 0 points
+		Screen.showCursor = false;
 	} // End Start()
 }

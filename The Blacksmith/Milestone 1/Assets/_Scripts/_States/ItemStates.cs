@@ -64,7 +64,8 @@ public class ItemStates : MonoBehaviour
 		if(Form > 100){
 			Form = 100;}
 		if(Form == 100){
-			State = STATES[0];}
+			State = STATES[0];
+			gameObject.tag="Weapon";}
 		if(Form < 0){
 			Form = 0;}
 		//Debug.Log("Added " + f + "Form:  Form=" + Form);
