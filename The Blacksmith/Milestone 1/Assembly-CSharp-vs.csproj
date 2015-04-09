@@ -61,6 +61,8 @@
      <Compile Include="Assets\Medieval Environment\Standard Assets\Image Effects (Pro Only)\SepiaToneEffect.cs" />
      <Compile Include="Assets\Medieval Environment\Standard Assets\Image Effects (Pro Only)\TwirlEffect.cs" />
      <Compile Include="Assets\Medieval Environment\Standard Assets\Image Effects (Pro Only)\VortexEffect.cs" />
+     <Compile Include="Assets\Menu\EndingGame.cs" />
+     <Compile Include="Assets\Menu\PlayBtn.cs" />
      <Compile Include="Assets\PlayerState.cs" />
      <Compile Include="Assets\_Scripts\BarrelBlocker.cs" />
      <Compile Include="Assets\_Scripts\CameraController.cs" />
