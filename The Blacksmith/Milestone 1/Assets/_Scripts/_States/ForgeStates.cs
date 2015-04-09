@@ -32,7 +32,8 @@ public class ForgeStates : MonoBehaviour {
 
 		if (Player != null) 
 		{
-			if(weapon != null){
+			if(weapon != null)
+			if(weapon.tag != "wood" && weapon.tag != "Shield"){
 				WeaponState = weapon.GetComponent<ItemStates>().State;
 				//Debug.Log(weapon.GetComponent<ItemStates>().Heat);
 				//Debug.Log(weapon);

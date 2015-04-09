@@ -45,6 +45,10 @@ public class ItemStates : MonoBehaviour
 			cooldownH = 1.0;
 			addHeat(-1);
 		}
+
+		if(Input.GetKeyDown("u")){
+			Debug.Log (gameObject.tag + ":" + State);
+		}
 	}
 
 
@@ -59,13 +63,19 @@ public class ItemStates : MonoBehaviour
 		}
 		//Debug.Log("Added " + f + " heat; heat= " + Heat);
 	}
+	public void setstate(int f){
+		State = STATES[f];
+		Debug.Log (State);
+	}
 	public void addForm(int f){
 		Form += f;
 		if(Form > 100){
 			Form = 100;}
 		if(Form == 100){
 			State = STATES[0];
-			gameObject.tag="Weapon";}
+			if(gameObject.tag=="Iron")
+				gameObject.tag="Weapon";
+		}
 		if(Form < 0){
 			Form = 0;}
 		//Debug.Log("Added " + f + "Form:  Form=" + Form);
@@ -77,6 +87,10 @@ public class ItemStates : MonoBehaviour
 		}
 		if(Quality > 200){
 			Quality = 200;
+		}
+		if(Quality > 125){
+			Debug.Log ("State set!");
+			State = STATES[0];
 		}
 	}
 	public void addDurability(int f){

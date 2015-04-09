@@ -26,6 +26,23 @@ public class ItemHoldingScript : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
+	public void setShield(GameObject RHS, int qual){
+		Debug.Log ("Entered setShield...");
+		rightHand = RHS;
+		rightHand.transform.parent = parent.transform;
+		Debug.Log ("Assigned shield...");
+		rightHand.GetComponent<Rigidbody>().isKinematic=true;
+		rightHand.GetComponent<BoxCollider>().isTrigger=true;
+		Debug.Log ("Set variables...");
+		rightHand.transform.localPosition = new Vector3(1f,0f,1.2f);
+		rightHand.transform.localRotation = new Quaternion(0,0,0,0);
+		Debug.Log ("Set position...");
+		rightHand.GetComponent<ItemStates>().setstate (0);
+		rightHand.GetComponent<ItemStates>().addQuality (qual);
+		myPlayerState.RightHand = rightHand.tag;
+		Debug.Log ("Cleared setShield()...");
+		Debug.Log (rightHand.GetComponent<ItemStates>().State);
+	}
 	void Update () {
 		updateHUD();
 		if(Input.GetMouseButtonDown(0)){//NOTE:  0 is LMB, 1 is RMB, 2 is MMB.
@@ -60,6 +77,7 @@ public class ItemHoldingScript : MonoBehaviour {
 				if(!locked){
 					rightHand.transform.parent = null;
 					rightHand.GetComponent<Rigidbody>().isKinematic=false;
+					rightHand.GetComponent<BoxCollider>().isTrigger=false;
 					rightHand = null;
 					myPlayerState.RightHand = "Empty";
 				}
@@ -82,6 +100,15 @@ public class ItemHoldingScript : MonoBehaviour {
 						rightHand.GetComponent<Rigidbody>().isKinematic=true;
 						rightHand.transform.localPosition = new Vector3(1,0,1);//One to the right, zero up, one forward.  Right hand position.
 						rightHand.transform.localRotation = new Quaternion(0,0,0, 0);//
+						myPlayerState.RightHand = rightHand.tag;
+					}
+					if(hit.collider.tag=="Wood" || hit.collider.tag=="Shield"){
+						rightHand = hit.collider.gameObject;
+						rightHand.transform.parent = parent.transform;
+						rightHand.GetComponent<Rigidbody>().isKinematic=true;
+						rightHand.GetComponent<BoxCollider>().isTrigger=true;
+						rightHand.transform.localPosition = new Vector3(1f,0f,1.2f);
+						rightHand.transform.localRotation = new Quaternion(0,0,0,0);
 						myPlayerState.RightHand = rightHand.tag;
 					}
 				}
@@ -109,7 +136,9 @@ public class ItemHoldingScript : MonoBehaviour {
 					}
 					if(hit.collider.tag=="Workbench"){
 						SnapToObject();
-						//hit.collider.GetComponent<WorkbenchStates>().Player = transform.parent.gameObject;
+						hit.collider.GetComponent<WorkbenchStates>().Player = parent;
+						hit.collider.GetComponent<WorkbenchStates>().SetWeapon (rightHand);
+						//hit.collider.GetComponent<WorkbenchStates>().SetTool (leftHand);
 						shackle = hit.collider;
 					}
 					if(hit.collider.tag=="Forge"){
@@ -154,7 +183,13 @@ public class ItemHoldingScript : MonoBehaviour {
 					shackle = null;
 				}
 				else if(shackle.tag=="Workbench"){
-					//hit.collider.GetComponent<WorkbenchStates>().Player = null;
+
+					shackle.GetComponent<WorkbenchStates>().Player = null;
+					shackle=null;
+					if(rightHand.tag == "Shield")
+						rightHand.GetComponent<ItemStates>().setstate(0);
+					Debug.Log ("ShieldState... "+rightHand.GetComponent<ItemStates>().State);
+					Debug.Log ("Shield's Tag... "+rightHand.tag);
 				}
 				else if(shackle.tag=="Forge"){
 					shackle.GetComponent<ForgeStates>().Player = null;
@@ -211,9 +246,14 @@ public class ItemHoldingScript : MonoBehaviour {
 		}
 		if(rightHand != null){
 			WeaponText.text = rightHand.tag;
-			SharpText.text = "Sharpness:  " + rightHand.GetComponent<ItemStates>().Sharpness.ToString();
-			HeatText.text = "Heat level:  " + rightHand.GetComponent<ItemStates>().Heat.ToString() + "%";
-			FormText.text = "Shape rating:  " + rightHand.GetComponent<ItemStates>().Form.ToString() + "%";
+			if(rightHand.tag == "Weapon" || rightHand.tag == "Iron"){
+				SharpText.text = "Sharpness:  " + rightHand.GetComponent<ItemStates>().Sharpness.ToString();
+				HeatText.text = "Heat level:  " + rightHand.GetComponent<ItemStates>().Heat.ToString() + "%";
+				FormText.text = "Shape rating:  " + rightHand.GetComponent<ItemStates>().Form.ToString() + "%";
+			}
+			if(rightHand.tag == "Shield"){
+				SharpText.text = "Quality:  " + rightHand.GetComponent<ItemStates>().Quality.ToString ();
+			}
 		}
 		else{
 			WeaponText.text = "";

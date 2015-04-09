@@ -40,6 +40,7 @@ public class AnvilStates : MonoBehaviour {
 			cooldown += Time.deltaTime;
 			hammercd -= Time.deltaTime;
 			if (weapon != null)
+			if(weapon.tag == "Weapon" || weapon.tag=="Iron")
 			{
 				WeaponState = weapon.GetComponent<ItemStates>().State;
 				if(down){
@@ -68,7 +69,8 @@ public class AnvilStates : MonoBehaviour {
 		//Beyond this point is the stuff James put into the same script file for convenience's sake; it'll be moved afterward (probably).
 		if(Input.GetMouseButton(1)){
 			//Debug.Log("Weapon is:" + weapon);
-			if(weapon != null){
+			if(weapon != null)
+			if(weapon.tag == "Iron" || weapon.tag == "Weapon"){
 				if(!isPoised){
 					isPoised = true;
 					WeaponToward();
@@ -90,9 +92,9 @@ public class AnvilStates : MonoBehaviour {
 			if(isPoised){
 				if(tool != null){
 					if(tool.tag == "Hammer"){
-						if(cooldown >= 2.0){
+						if(cooldown >= .5){
 							ToolToward();
-							hammercd = 1.5;
+							hammercd = .5;
 							down = true;
 							if(weapon.GetComponent<ItemStates>().Heat >= 50){
 								weapon.GetComponent<ItemStates>().addHeat(-7);
