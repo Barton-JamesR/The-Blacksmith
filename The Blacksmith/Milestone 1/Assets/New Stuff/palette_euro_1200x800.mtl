@@ -1,0 +1,16 @@
+# Wavefront MTL file
+# Creator: Ultimate Unwrap3D Pro v3.33
+# URL: http://www.unwrap3d.com
+# Time: Sun Mar 31 08:26:32 2013
+# num_materials: 1
+
+newmtl eur_palette_1
+Ka 0.588000 0.588000 0.588000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 1.000000
+map_Kd palette_euro_01_1k.png
+
+# num_materials: 1
