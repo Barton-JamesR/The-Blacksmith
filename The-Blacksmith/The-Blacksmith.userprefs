@@ -1,0 +1,19 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_Scripts\CursorScript.cs">
+    <Files>
+      <File FileName="Assets\_Scripts\_States\AnvilStates.cs" Line="95" Column="31" />
+      <File FileName="Assets\_Scripts\_States\BarrelStates.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\_States\ItemStates.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\_States\DepositStates.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\ItemHoldingScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\_States\PlayerStates.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\_States\GrindstoneStates.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\CursorScript.cs" Line="5" Column="18" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
